@@ -14,8 +14,10 @@ public class CountTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		double random = Math.random();
 		Counter.traceOn();
-		Counter.setDelay(.5);
+		Counter.setDelay(random);
+		System.out.println(random);		
 	}
 
 	@AfterClass
