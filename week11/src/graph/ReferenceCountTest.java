@@ -33,19 +33,18 @@ public class ReferenceCountTest {
 		{
 			test.add(i);
 		}
-		test.add(0, 7);
-		test.add(1, 5);
-		test.add(2, 7);
-		test.add(3, 6);
+		test.add(1, 8);
+		test.add(1, 2);
+		test.add(2, 3);
+		test.add(3, 4);
 		test.add(4, 5);
-		test.add(5, 4);
-		test.add(6, 3);
-		test.add(7, 2);
-		test.add(8, 1);
-		test.add(8, 0);
-		//System.out.println(test.getNoOfEdges());
-		//System.out.println(test.getNoOfNodes());
-		//System.out.println(test.getSort());
+		test.add(5, 6);
+		test.add(6, 7);
+		test.add(7, 8);
+		test.add(9, 8);
+		System.out.println(test.getNoOfEdges());
+		System.out.println(test.getNoOfNodes());
+		System.out.println(test.getSort().toString());
 	}
 
 }

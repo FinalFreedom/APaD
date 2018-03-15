@@ -12,11 +12,8 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	{
 		for(T node: graphCopy)
 		{
-			if(getNeighbours(node).size()==0)
-			{
-				sortNode(node);
-				break;
-			}
+			sortNode(node);
+			break;
 		}
 		return traversal;
 	}
@@ -24,13 +21,17 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	{
 		traversal.add(node);
 		graphCopy.remove(node);
-		//A graphCopy with 0 remaining nodes will simply never run this forEach loop
-		for(T remaining: graphCopy)
+		if(graphCopy.size()>1)
 		{
-			if(getNeighbours(remaining).size()==0)
+			for(T remaining: graphCopy)
 			{
-				sortNode(remaining);
+				if(getNeighbours(remaining).size()==0)
+				{
+					sortNode(remaining);
+					break;
+				}
 			}
 		}
+		
 	}
 }
