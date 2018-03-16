@@ -1,40 +1,77 @@
 package linkedList;
 
 public class Lists<T> implements List<T>{
-	private Node indexNode;
+	private Node<T> startNode = null;
+
 	@Override
-	public void add(int index, T value) throws ListAccessError {
-		indexNode.setNext(new Node(value));
-	}
-	@Override
-	public T remove(int index) throws ListAccessError {
-		Node temp = indexNode;
-		for(int i=0;i<index-1;i++)
+	public void add(int index, T value) throws ListAccessError
+	{
+		Node<T> addNode = new Node<T>(value); //Create the node to be added
+		if(index ==0)
 		{
-			temp= temp.getNext();
+			Node<T> temp = startNode.getNext();
+			startNode = addNode;
+			startNode.setNext(temp);
 		}
-		T deleted = (T) temp.getNext().getValue();
-		temp.setNext(null);
-		return deleted;
+		else
+		{
+			addNode.setNext(getNode(index));
+			getNode(index-1).setNext(addNode);
+		}
 	}
+	
 	@Override
-	public T get(int index) throws ListAccessError {
-		Node temp = indexNode;
-		for(int i=0;i<index;i++)
+	public T remove(int index) throws ListAccessError
+	{
+		if(index==0)
+		{
+			T returnVal = startNode.getValue();
+			startNode = startNode.getNext();
+			return returnVal;
+		}
+		else
+		{
+			Node<T> temp = getNode(index-1);
+			Node<T> overwrite = getNode(index);
+			T returnVal = (T) overwrite.getValue();
+			if(overwrite.getNext()!=null)
+			{
+				temp.setNext(overwrite.getNext());
+				return returnVal;
+			}
+			else
+			{
+				temp.setNext(null);
+				return returnVal;
+			}
+		}
+	}
+	
+	@Override
+	public T get(int index) throws ListAccessError
+	{
+		return (T) getNode(index).getValue();
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return startNode==null;
+	}
+	
+	private Node<T> getNode(int index) throws ListAccessError
+	{
+		Node<T> temp = startNode;
+		for(int i =0;i<index;i++)
 		{
 			if(temp.getNext()==null)
 			{
-				return null;
+				throw new ListAccessError("Index out of bounds");
 			}
 			else
 			{
 				temp = temp.getNext();
 			}
 		}
-		return (T) temp.getValue();
-	}
-	@Override
-	public boolean isEmpty() {
-		return indexNode==null;
+		return temp;
 	}
 }
