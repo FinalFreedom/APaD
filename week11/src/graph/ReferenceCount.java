@@ -7,8 +7,7 @@ import java.util.Set;
 
 public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalSort<T>
 {
-	private List<T> traversal = null;
-	private Set<T> graphCopy = getNodes();
+	private List<T> traversal;
 	private HashMap<T,Integer> countTable = new HashMap<T,Integer>();
 	@Override
 	public List<T> getSort() throws GraphError
@@ -20,11 +19,11 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	
 	private void setup() throws GraphError
 	{
-		initialize();
+		initialise();
 		countRefrences();
 	}
 	
-	private void initialize()
+	private void initialise()
 	{
 		for(T node: getNodes())
 		{
@@ -45,9 +44,20 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	}
 	private void sort() throws GraphError
 	{
-		while(graphCopy.size()>0)
+		T node;
+		while((node = nextReferenceZeroNode())!=null)
 		{
-			sortNode(nextReferenceZeroNode());
+			for(T neighbour:getNeighbours(node))
+			{
+				Integer neighbours = countTable.get(neighbour);
+				if(neighbours!=null)
+				{
+					countTable.put(neighbour, neighbours-1);
+				}
+				countTable.put(node, neighbours-1);
+			}
+			countTable.remove(node);
+			traversal.add(node);
 		}
 	}
 	
@@ -55,18 +65,12 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	{
 		for(Entry<T, Integer> node:countTable.entrySet())
 		{
-			if(node.getValue()!=0)//Node has 0 neighbours
+			if(node.getValue()==0)
 			{
-				return node.getKey();
+				return (T) node.getKey();
 			}
 		}
 		return null;
 		
-	}
-	
-	private void sortNode(T node) throws GraphError
-	{
-		traversal.add(node);
-		graphCopy.remove(node);
 	}
 }

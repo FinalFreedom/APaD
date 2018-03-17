@@ -51,7 +51,6 @@ public class ReferenceCountTest {
 		System.out.println(test.getNoOfNodes());
 		System.out.println(test.getNodes());
 		test.getSort();
-		System.out.println(test.getSort());
 		System.out.println("Hi");
 	}
 
