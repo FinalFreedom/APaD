@@ -2,6 +2,7 @@ package graph;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalSort<T>
@@ -42,30 +43,30 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 			}
 		}
 	}
-	private void sort()
+	private void sort() throws GraphError
 	{
-		while(1==1)
+		while(graphCopy.size()>0)
 		{
-			//Woo
+			sortNode(nextReferenceZeroNode());
 		}
 	}
 	
-	private void nextReferenceZeroNode()//WORK HERE DUMBASS
+	private T nextReferenceZeroNode()
+	{
+		for(Entry<T, Integer> node:countTable.entrySet())
+		{
+			if(node.getValue()!=0)//Node has 0 neighbours
+			{
+				return node.getKey();
+			}
+		}
+		return null;
+		
+	}
 	
 	private void sortNode(T node) throws GraphError
 	{
 		traversal.add(node);
 		graphCopy.remove(node);
-		if(graphCopy.size()>1)
-		{
-			for(T remaining: graphCopy)
-			{
-				if(getNeighbours(remaining).size()==0)
-				{
-					sortNode(remaining);
-					break;
-				}
-			}
-		}
 	}
 }
