@@ -37,8 +37,8 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 		{
 			for(T neighbour:getNeighbours(node))
 			{
-				int i = countTable.get(neighbour);
-				countTable.put(neighbour, ++i);
+				//int i = countTable.get(neighbour); ,++i
+				countTable.put(neighbour, +countTable.get(neighbour));
 			}
 		}
 	}
@@ -49,15 +49,18 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 		{
 			for(T neighbour:getNeighbours(node))
 			{
-				Integer neighbours = countTable.get(neighbour);
-				if(neighbours!=null)
+				Integer count = countTable.get(neighbour);
+				if(count!=null)
 				{
-					countTable.put(neighbour, neighbours-1);
+					countTable.put(neighbour, count-1);
 				}
-				countTable.put(node, neighbours-1);
+				countTable.put(node, count-1);
 			}
 			countTable.remove(node);
+			System.out.println(node);
 			traversal.add(node);
+			
+			
 		}
 	}
 	
