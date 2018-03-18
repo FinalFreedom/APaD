@@ -47,11 +47,9 @@ public class ReferenceCountTest {
 		test.add(8, 4);
 		test.add(8, 7);
 		test.add(9, 4);
-		System.out.println(test.getNoOfEdges());
-		System.out.println(test.getNoOfNodes());
 		System.out.println(test.getNodes());
-		test.getSort();
-		System.out.println("Hi");
+		System.out.println(test.getSort().toString());
+		//assert AssertEquals
 	}
 
 }

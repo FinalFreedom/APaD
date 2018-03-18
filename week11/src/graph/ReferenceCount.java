@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 
 public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalSort<T>
 {
-	private List<T> traversal;
+	private Stack<T> traversal = new Stack<T>();
 	private HashMap<T,Integer> countTable = new HashMap<T,Integer>();
 	@Override
 	public List<T> getSort() throws GraphError
@@ -37,8 +38,8 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 		{
 			for(T neighbour:getNeighbours(node))
 			{
-				//int i = countTable.get(neighbour); ,++i
-				countTable.put(neighbour, +countTable.get(neighbour));
+				int i = countTable.get(neighbour);
+				countTable.put(neighbour, ++i);
 			}
 		}
 	}
@@ -57,10 +58,7 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 				countTable.put(node, count-1);
 			}
 			countTable.remove(node);
-			System.out.println(node);
 			traversal.add(node);
-			
-			
 		}
 	}
 	
@@ -74,6 +72,5 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 			}
 		}
 		return null;
-		
 	}
 }
