@@ -8,7 +8,12 @@ public class ThreadHashSet<T extends Thread> extends HashSet<T> implements Threa
 	public void runSet() throws InterruptedException {
 		// TODO Auto-generated method stub
 		for(Thread thread: this) {
-			thread.run();
+			thread.start();
+		}
+		for(Thread thread: this) {
+			try {
+				thread.join();
+			} catch (InterruptedException e){};
 		}
 	}
 }

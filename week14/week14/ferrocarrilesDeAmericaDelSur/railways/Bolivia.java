@@ -20,29 +20,30 @@ public class Bolivia extends Railway {
      * This method provides (incorrect) synchronisation attempting to avoid more than one train in the 
      * pass at any one time.
      */
-    public void runTrain() throws RailwaySystemError
-    {
-    	Clock clock = getRailwaySystem().getClock();
-    	Railway nextRailway = getRailwaySystem().getNextRailway(this);
-    	Basket basket = getBasket();
-    	while (!clock.timeOut())
-    	{
-    		choochoo();
-    		basket.putStone(this);
-    		while (nextRailway.getBasket().hasStone(this))
-    		{
-    			if(basket.hasStone(this))//nextRailway.getBasket().hasStone(this) == 
-    			{
-    				basket.takeStone(this);
-    				while(basket.hasStone(this))
-    				{
-    					siesta();
-    				}
-    				basket.putStone(this);
-    			}
-    		}
-    		crossPass();
-    		basket.takeStone(this);
-    	}
-    }
+	 public void runTrain() throws RailwaySystemError
+	 {
+		Clock clock = getRailwaySystem().getClock(); //Condition to run
+	    Railway nextRailway = getRailwaySystem().getNextRailway(this); 
+	    Basket basket = getBasket(); 
+	    while (!clock.timeOut()) //While(true)
+	    {
+	    	choochoo(); 
+	    	basket.putStone(this); //procReqCS = true
+	    	while (nextRailway.getBasket().hasStone(this)) //while(procReqCS[(id+1)%2])
+	    	{
+	    		if(!getSharedBasket().hasStone(this)) //if(turn==(id+1)%2
+	    		{
+	    			basket.takeStone(this); //rescind intention
+	    			while(!getSharedBasket().hasStone(this)) //wait for priority
+	    			{
+	    				siesta(); //waiting
+	    			}
+	    			basket.putStone(this); //reinstate intention
+	    		}
+	    	}
+	    	crossPass(); //critical section
+	    	getSharedBasket().takeStone(this); //swap priority
+	    	basket.takeStone(this); //procReqSC[id] = false;
+	    }
+	 }
 }

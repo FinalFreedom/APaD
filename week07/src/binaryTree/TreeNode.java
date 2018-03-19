@@ -6,8 +6,8 @@ public class TreeNode<T extends Comparable<? super T>> {
 	
 	public TreeNode(T value) {
 		this.value = value;
-		//left = new BinaryTree<T>();
-		//right = new BinaryTree<T>();
+		left = new BinaryTree<T>();
+		right = new BinaryTree<T>();
 	}
 	
 	public T value() {

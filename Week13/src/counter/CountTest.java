@@ -16,7 +16,7 @@ public class CountTest {
 	public static void setUpBeforeClass() throws Exception {
 		double random = Math.random();
 		Counter.traceOn();
-		Counter.setDelay(random);
+		Counter.setDelay(1);
 		System.out.println(random);		
 	}
 
@@ -33,12 +33,12 @@ public class CountTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void test_5_10_and_5_0() throws InterruptedException {
+	//@Test
+	/**public void test_5_10_and_5_0() throws InterruptedException {
 		countSet.add(new Counter(5,10));
 		countSet.add(new Counter(5,0));
 		countSet.runSet();
-	}
+	}**/
 	
 	@Test
 	public void test0_10_and_0_10() throws InterruptedException

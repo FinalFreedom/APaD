@@ -1,23 +1,30 @@
 package linkedList;
 
 public class Lists<T> implements List<T>{
-	private Node<T> startNode = null;
-
+	private Node<T> startNode=null;
+	private int nodeCount;
 	@Override
 	public void add(int index, T value) throws ListAccessError
 	{
 		Node<T> addNode = new Node<T>(value); //Create the node to be added
-		if(index ==0)
+		if(isEmpty())
 		{
-			Node<T> temp = startNode.getNext();
 			startNode = addNode;
-			startNode.setNext(temp);
 		}
 		else
 		{
-			addNode.setNext(getNode(index));
-			getNode(index-1).setNext(addNode);
+			if(getNode(index-1).getNext()==null)
+			{
+				getNode(index-1).setNext(addNode);
+			}
+			else
+			{
+				addNode.setNext(getNode(index));
+				getNode(index).setNext(addNode);
+			}
+			nodeCount++;
 		}
+		
 	}
 	
 	@Override
@@ -27,6 +34,7 @@ public class Lists<T> implements List<T>{
 		{
 			T returnVal = startNode.getValue();
 			startNode = startNode.getNext();
+			nodeCount--;
 			return returnVal;
 		}
 		else
@@ -37,13 +45,13 @@ public class Lists<T> implements List<T>{
 			if(overwrite.getNext()!=null)
 			{
 				temp.setNext(overwrite.getNext());
-				return returnVal;
 			}
 			else
 			{
 				temp.setNext(null);
-				return returnVal;
 			}
+			nodeCount--;
+			return returnVal;
 		}
 	}
 	
@@ -61,16 +69,13 @@ public class Lists<T> implements List<T>{
 	private Node<T> getNode(int index) throws ListAccessError
 	{
 		Node<T> temp = startNode;
+		if(index>nodeCount | index<0 | isEmpty())
+		{
+			throw new ListAccessError("Index out of bounds");
+		}
 		for(int i =0;i<index;i++)
 		{
-			if(temp.getNext()==null)
-			{
-				throw new ListAccessError("Index out of bounds");
-			}
-			else
-			{
 				temp = temp.getNext();
-			}
 		}
 		return temp;
 	}

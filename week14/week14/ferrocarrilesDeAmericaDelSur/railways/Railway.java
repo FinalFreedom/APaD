@@ -11,6 +11,7 @@ import tools.Delay;
  *
  */
 public abstract class Railway extends Thread {
+	private int passes;//
 	private String name; // the name of the railway
 	private static Basket sharedBasket = new Basket("shared basket"); // a shared basket for notifications
 	private Basket basket; // private basket
@@ -25,6 +26,7 @@ public abstract class Railway extends Thread {
 		this.delay = delay;
 		position = Position.END_PASS; // all trains start just after the
 		basket = new Basket(name + "'s basket");
+		passes = 0;//
 	}
 
 	/**
@@ -100,6 +102,8 @@ public abstract class Railway extends Thread {
 	 */
 	private synchronized void enterPass() throws ProgrammingError {
 		railwaySystem.trace(name + ": entering pass");
+		passes++;//
+		System.out.println(passes);//
 		if (position != Position.START_PASS) {
 			throw new ProgrammingError(name + " cannot enter the pass, it is not " + Position.START_PASS + ", it is " + position + ".");
 		}

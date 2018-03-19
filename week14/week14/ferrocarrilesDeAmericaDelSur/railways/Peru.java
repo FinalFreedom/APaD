@@ -22,27 +22,28 @@ public class Peru extends Railway {
      */
 	 public void runTrain() throws RailwaySystemError
 	 {
-		 Clock clock = getRailwaySystem().getClock();
-	    	Railway nextRailway = getRailwaySystem().getNextRailway(this);
-	    	Basket basket = getBasket();
-	    	while (!clock.timeOut())
+		Clock clock = getRailwaySystem().getClock(); //Condition to run
+	    Railway nextRailway = getRailwaySystem().getNextRailway(this);
+	    Basket basket = getBasket(); 
+	    while (!clock.timeOut()) //While(true)
+	    {
+	    	choochoo(); 
+	    	basket.putStone(this); //procReqCS = true
+	    	while (nextRailway.getBasket().hasStone(this)) //while(procReqCS[(id+1)%2])
 	    	{
-	    		choochoo();
-	    		basket.putStone(this);
-	    		while (nextRailway.getBasket().hasStone(this))
+	    		if(getSharedBasket().hasStone(this))//if(turn==(id+1)%2
 	    		{
-	    			if(basket.hasStone(this))//nextRailway.getBasket().hasStone(this) == 
+	    			basket.takeStone(this);//rescind intention
+	    			while(getSharedBasket().hasStone(this))//wait for priority
 	    			{
-	    				basket.takeStone(this);
-	    				while(basket.hasStone(this))//nextRailway.getBasket().hasStone(this) 
-	    				{
-	    					siesta();
-	    				}
-	    				basket.putStone(this);
+	    				siesta();//waiting
 	    			}
+	    			basket.putStone(this);//reinstate intention
 	    		}
-	    		crossPass();
-	    		basket.takeStone(this);
 	    	}
+	    	crossPass(); //critical section
+	    	getSharedBasket().putStone(this);//swap priority
+	    	basket.takeStone(this);//procReqSC[id] = false;
 	    }
-	}
+	 }
+}
