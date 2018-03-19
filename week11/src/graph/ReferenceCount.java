@@ -20,8 +20,18 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	
 	private void setup() throws GraphError
 	{
-		initialise();
-		countRefrences();
+		for(T node: getNodes())
+		{
+			countTable.put(node,0);
+		}
+		for(T node:getNodes())
+		{
+			for(T neighbour:getNeighbours(node))
+			{
+				int i = countTable.get(neighbour);
+				countTable.put(neighbour, ++i);
+			}
+		}
 	}
 	
 	private void initialise()

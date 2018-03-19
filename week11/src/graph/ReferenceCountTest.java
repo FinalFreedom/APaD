@@ -2,6 +2,7 @@ package graph;
 
 import static org.junit.Assert.*;
 
+import java.awt.List;
 import java.util.Arrays;
 
 import org.junit.After;
@@ -49,7 +50,7 @@ public class ReferenceCountTest {
 		test.add(9, 4);
 		System.out.println(test.getNodes());
 		System.out.println(test.getSort().toString());
-		//assert AssertEquals
+		//assertEquals(new String("[3, 6, 0, 1, 2, 5, 8, 7, 9, 4]"),test.getSort().toString());
 	}
 
 }
