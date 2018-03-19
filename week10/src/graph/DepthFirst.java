@@ -22,7 +22,7 @@ public class DepthFirst<T> extends AdjacencyGraph<T> implements Traversal<T> {
 			}
 			else break;
 		}
-		return null;
+		return traversal;
 	}
 	
 	private void RecursiveTraversal(T node) throws GraphError
