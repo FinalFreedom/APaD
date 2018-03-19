@@ -3,7 +3,6 @@ package graph;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.Stack;
 
 public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalSort<T>
@@ -20,10 +19,12 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 	
 	private void setup() throws GraphError
 	{
+		//Initialise the graph onto the HashMap
 		for(T node: getNodes())
 		{
 			countTable.put(node,0);
 		}
+		//Update the HashMap to have data of how many neighbours each node has
 		for(T node:getNodes())
 		{
 			for(T neighbour:getNeighbours(node))
@@ -33,42 +34,23 @@ public class ReferenceCount<T> extends AdjacencyGraph<T> implements TopologicalS
 			}
 		}
 	}
-	
-	private void initialise()
-	{
-		for(T node: getNodes())
-		{
-			countTable.put(node,0);
-		}
-	}
-	
-	private void countRefrences() throws GraphError
-	{
-		for(T node:getNodes())
-		{
-			for(T neighbour:getNeighbours(node))
-			{
-				int i = countTable.get(neighbour);
-				countTable.put(neighbour, ++i);
-			}
-		}
-	}
+
 	private void sort() throws GraphError
 	{
-		T node;
-		while((node = nextReferenceZeroNode())!=null)
+		T zeroNode; //Create a local variable for the node with 0 neighbours
+		while((zeroNode = nextReferenceZeroNode())!=null)
 		{
-			for(T neighbour:getNeighbours(node))
+			for(T neighbour:getNeighbours(zeroNode))
 			{
 				Integer count = countTable.get(neighbour);
 				if(count!=null)
 				{
 					countTable.put(neighbour, count-1);
 				}
-				countTable.put(node, count-1);
+				countTable.put(zeroNode, count-1);
 			}
-			countTable.remove(node);
-			traversal.add(node);
+			countTable.remove(zeroNode);
+			traversal.add(zeroNode);
 		}
 	}
 	
