@@ -31,10 +31,10 @@ public class Bolivia extends Railway {
     		basket.putStone(this);
     		while (nextRailway.getBasket().hasStone(this))
     		{
-    			if(nextRailway.getBasket().hasStone(this) == basket.hasStone(this))
+    			if(basket.hasStone(this))//nextRailway.getBasket().hasStone(this) == 
     			{
     				basket.takeStone(this);
-    				while(nextRailway.getBasket().hasStone(this) != basket.hasStone(this))
+    				while(basket.hasStone(this))
     				{
     					siesta();
     				}
